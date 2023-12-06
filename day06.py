@@ -1,39 +1,38 @@
+from math import ceil, floor, sqrt
+
 from common import get_input
+
+
+def get_num_sols(time, dist):
+    quad_inner = sqrt(time ** 2 - 4 * dist)
+    l = ceil((-time - quad_inner) / 2)
+    r = floor((-time + quad_inner) / 2)
+    return r - l + 1
 
 
 def part1():
     data = get_input(6)
-    times = list(map(int, data[0].split(":")[1].split()))
-    distances = list(map(int, data[1].split(":")[1].split()))
+    times = data[0].split(":")[1].split()
+    distances = data[1].split(":")[1].split()
+
     product = 1
-    for i in range(len(times)):
-        time = times[i]  # to hold & release
-        dist = distances[i]  # to beat
-        num_sols = 0
-        for speed in range(time+1):
-            time_left = time-speed
-            full_dist = speed * time_left
-            if full_dist > dist:
-                num_sols += 1
-        product *= num_sols
+    for time, dist in zip(
+        map(int, times),
+        map(int, distances),
+    ):
+        product *= get_num_sols(time, dist)
     print(product)
 
 
-
 def part2():
-    # todo: improve to use quadratic formula
     data = get_input(6)
     times = data[0].split(":")[1].split()
-    time = int("".join(times))
     distances = data[1].split(":")[1].split()
-    dist = int("".join(distances))
-    num_sols = 0
-    for speed in range(time + 1):
-        time_left = time - speed
-        full_dist = speed * time_left
-        if full_dist > dist:
-            num_sols += 1
-    print(num_sols)
+
+    print(get_num_sols(
+        int("".join(times)),
+        int("".join(distances))
+    ))
 
 
 if __name__ == "__main__":
