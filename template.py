@@ -5,19 +5,26 @@ from math import *
 
 from common import *
 
-inputs = """
-""".splitlines()
+level = 12
 
 
 def part1():
-    data = get_input()
+    global level
+
+    data = """
+""".splitlines()
+    data = get_input(level)
     # data = get_groups(data)
     for entry in data:
         pass
 
 
 def part2():
-    data = get_input()
+    global level
+
+    data = """
+""".splitlines()
+    data = get_input(level)
     # data = get_groups(data)
     pass
 
