@@ -41,7 +41,7 @@ def num_valid(springs, nums):
         if '.' in springs[i:end]:
             continue
 
-        # if there is an extra spring, return 0
+        # if there is an extra spring, match failed
         if end != ls and springs[end] == '#':
             continue
 
@@ -53,7 +53,7 @@ def part1_2():
     data = get_input(12)
 
     part1 = part2 = 0
-    for i, entry in enumerate(data):
+    for entry in data:
         springs, nums = entry.split()
         springs = tuple(ch for ch in springs)
         nums = tuple(map(int, nums.split(',')))
