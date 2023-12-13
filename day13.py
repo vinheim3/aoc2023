@@ -55,7 +55,7 @@ if __name__ == "__main__":
             if get_horiz_equal(grid, i, False):
                 horiz = i + 1
                 total += 100 * horiz
-                mapping[pi] = ('h', horiz)
+                mapping[pi] = ('h', i)
                 break
         if horiz:
             continue
@@ -67,7 +67,7 @@ if __name__ == "__main__":
                 if get_vert_equal(grid, i, False):
                     vert = i + 1
                     total += vert
-                    mapping[pi] = ('v', vert)
+                    mapping[pi] = ('v', i)
                     break
         assert vert
     print("Part 1:", total)
@@ -80,7 +80,7 @@ if __name__ == "__main__":
         horiz = None
         prev_valid = mapping[pi]
         for i in range(grid.height - 1):
-            if prev_valid == ('h', i + 1):
+            if prev_valid == ('h', i):
                 continue
             if get_horiz_equal(grid, i, True):
                 horiz = i + 1
@@ -93,7 +93,7 @@ if __name__ == "__main__":
         vert = None
         if horiz is None:
             for i in range(grid.width - 1):
-                if prev_valid == ('v', i + 1):
+                if prev_valid == ('v', i):
                     continue
                 if get_vert_equal(grid, i, True):
                     vert = i + 1
