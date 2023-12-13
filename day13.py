@@ -1,3 +1,5 @@
+from typing import Callable, List
+
 from common import get_input, get_groups
 from grid import Grid
 
@@ -6,7 +8,7 @@ def get_dim_equal(grid: Grid, is_cols: bool, dimi: int, diff1_allowed: bool) -> 
     li, ri = dimi, dimi+1
     end = grid.width if is_cols else grid.height
     while li >= 0 and ri < end:
-        f = grid.get_col if is_cols else grid.get_row
+        f: Callable[[int], List[str]] = grid.get_col if is_cols else grid.get_row
         pos1 = {i for i, ch in enumerate(f(li)) if ch == '#'}
         pos2 = {i for i, ch in enumerate(f(ri)) if ch == '#'}
         same = pos1 & pos2
