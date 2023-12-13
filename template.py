@@ -13,7 +13,7 @@ def part1():
 
     data = """
 """.splitlines()
-    data = get_input(level)
+    # data = get_input(level)
     # data = get_groups(data)
     for entry in data:
         pass
@@ -24,7 +24,7 @@ def part2():
 
     data = """
 """.splitlines()
-    data = get_input(level)
+    # data = get_input(level)
     # data = get_groups(data)
     pass
 
