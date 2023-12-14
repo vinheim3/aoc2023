@@ -15,3 +15,10 @@ class Grid:
 
     def get_row(self, idx: int) -> List[str]:
         return self.grid[idx]
+
+    def set_col(self, idx: int, col: List[str]):
+        for i in range(self.height):
+            self.grid[i][idx] = col[i]
+
+    def set_row(self, idx: int, row: List[str]):
+        self.grid[idx] = row

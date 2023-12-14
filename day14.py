@@ -32,24 +32,18 @@ if __name__ == "__main__":
         match move:
             case 0:
                 for i in range(grid.width):
-                    new_col = move_up(tuple(grid.get_col(i)))
-                    for j in range(grid.height):
-                        grid.grid[j][i] = new_col[j]
+                    grid.set_col(i, move_up(tuple(grid.get_col(i))))
                 if loopi == 0:
                     print("Part 1:", get_load(grid))
             case 1:
                 for i in range(grid.height):
-                    new_row = move_up(tuple(grid.get_row(i)))
-                    grid.grid[i] = list(new_row)
+                    grid.grid[i] = list(move_up(tuple(grid.get_row(i))))
             case 2:
                 for i in range(grid.width):
-                    new_col = list(reversed(move_up(tuple(reversed(grid.get_col(i))))))
-                    for j in range(grid.height):
-                        grid.grid[j][i] = new_col[j]
+                    grid.set_col(i, list(reversed(move_up(tuple(reversed(grid.get_col(i)))))))
             case 3:
                 for i in range(grid.height):
-                    new_row = move_up(tuple(reversed(grid.get_row(i))))
-                    grid.grid[i] = list(reversed(new_row))
+                    grid.grid[i] = list(reversed(move_up(tuple(reversed(grid.get_row(i))))))
 
         curr = tuple(tuple(row) for row in grid.grid)
         if curr in seen:
