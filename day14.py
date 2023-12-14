@@ -1,5 +1,4 @@
-from functools import cache, reduce
-from operator import add
+from functools import cache
 
 from common import get_input
 from grid import Grid
@@ -8,18 +7,23 @@ from grid import Grid
 def get_load(grid):
     height = grid.height
     return sum(
-        sum([height - i for i, ch in enumerate(grid.get_col(coli)) if ch == 'O'])
-        for coli in range(grid.width)
+        sum([height - i for i, ch in enumerate(col) if ch == 'O'])
+        for col in grid.get_cols()
     )
 
 
 @cache
 def move_up(col: tuple):
-    new_regs = []
+    new_regs = tuple()
     for reg in "".join(col+('#',)).split('#'):
         os = reg.count('O')
-        new_regs.append(('O',)*os + ('.',)*(len(reg)-os) + ('#',))
-    return reduce(add, new_regs, ())[:-2]
+        new_regs += (('O',)*os + ('.',)*(len(reg)-os) + ('#',))
+    return new_regs[:-2]  # exclude last group's # and extra terminating #
+
+
+@cache
+def move_down(col: tuple):
+    return tuple(reversed(move_up(tuple(reversed(col)))))
 
 
 if __name__ == "__main__":
@@ -31,25 +35,24 @@ if __name__ == "__main__":
     while 1:
         match move:
             case 0:
-                for i in range(grid.width):
-                    grid.set_col(i, move_up(tuple(grid.get_col(i))))
-                if loopi == 0:
-                    print("Part 1:", get_load(grid))
+                for i, col in enumerate(grid.get_cols()):
+                    grid.set_col(i, list(move_up(tuple(col))))
             case 1:
-                for i in range(grid.height):
-                    grid.grid[i] = list(move_up(tuple(grid.get_row(i))))
+                for i, row in enumerate(grid.get_rows()):
+                    grid.set_row(i, list(move_up(tuple(row))))
             case 2:
-                for i in range(grid.width):
-                    grid.set_col(i, list(reversed(move_up(tuple(reversed(grid.get_col(i)))))))
+                for i, col in enumerate(grid.get_cols()):
+                    grid.set_col(i, list(move_down(tuple(col))))
             case 3:
-                for i in range(grid.height):
-                    grid.grid[i] = list(reversed(move_up(tuple(reversed(grid.get_row(i))))))
+                for i, row in enumerate(grid.get_rows()):
+                    grid.set_row(i, list(move_down(tuple(row))))
 
         curr = tuple(tuple(row) for row in grid.grid)
         if curr in seen:
             loop_count = loopi - seen[curr]
             first = seen[curr]
             bill_same_idx = ((4_000_000_000 - 1 - first) % loop_count) + first
+            print("Part 1:", get_load(Grid([k for k, v in seen.items() if v == 0][0])))
             print("Part 2:", get_load(Grid([k for k, v in seen.items() if v == bill_same_idx][0])))
             break
         else:
