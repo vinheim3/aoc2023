@@ -1,3 +1,6 @@
+from functools import cache, reduce
+from operator import add
+
 from common import get_input
 from grid import Grid
 
@@ -10,15 +13,13 @@ def get_load(grid):
     )
 
 
-def move_up(col):
-    new_col = []
-    col.append('#')
-    for reg in "".join(col).split('#'):
+@cache
+def move_up(col: tuple):
+    new_regs = []
+    for reg in "".join(col+('#',)).split('#'):
         os = reg.count('O')
-        new_col.extend(['O'] * os)
-        new_col.extend(['.'] * (len(reg) - os))
-        new_col.append('#')
-    return new_col[:-2]  # exclude last group's #, and extra terminating #
+        new_regs.append(('O',)*os + ('.',)*(len(reg)-os) + ('#',))
+    return reduce(add, new_regs, ())[:-2]
 
 
 if __name__ == "__main__":
@@ -31,23 +32,23 @@ if __name__ == "__main__":
         match move:
             case 0:
                 for i in range(grid.width):
-                    new_col = move_up(grid.get_col(i))
+                    new_col = move_up(tuple(grid.get_col(i)))
                     for j in range(grid.height):
                         grid.grid[j][i] = new_col[j]
                 if loopi == 0:
                     print("Part 1:", get_load(grid))
             case 1:
                 for i in range(grid.height):
-                    new_row = move_up(grid.get_row(i))
-                    grid.grid[i] = new_row
+                    new_row = move_up(tuple(grid.get_row(i)))
+                    grid.grid[i] = list(new_row)
             case 2:
                 for i in range(grid.width):
-                    new_col = list(reversed(move_up(list(reversed(grid.get_col(i))))))
+                    new_col = list(reversed(move_up(tuple(reversed(grid.get_col(i))))))
                     for j in range(grid.height):
                         grid.grid[j][i] = new_col[j]
             case 3:
                 for i in range(grid.height):
-                    new_row = move_up(list(reversed(grid.get_row(i))))
+                    new_row = move_up(tuple(reversed(grid.get_row(i))))
                     grid.grid[i] = list(reversed(new_row))
 
         curr = tuple(tuple(row) for row in grid.grid)
