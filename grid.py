@@ -6,7 +6,7 @@ class Grid:
         """
         :param data: a 2-d list
         """
-        self.grid = data
+        self.grid = [[*row] for row in data]
         self.width = len(data[0])
         self.height = len(data)
 

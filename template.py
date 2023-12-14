@@ -1,32 +1,30 @@
+from copy import deepcopy
 from collections import *
 from functools import *
 from itertools import *
 from math import *
 
 from common import *
+from grid import Grid
 
 level = 12
 
+data = """
+""".splitlines()
+# data = get_input(level)
+# data = get_groups(data)
+
 
 def part1():
-    global level
-
-    data = """
-""".splitlines()
-    # data = get_input(level)
-    # data = get_groups(data)
-    for entry in data:
+    entries = deepcopy(data)
+    for entry in entries:
         pass
 
 
 def part2():
-    global level
-
-    data = """
-""".splitlines()
-    # data = get_input(level)
-    # data = get_groups(data)
-    pass
+    entries = deepcopy(data)
+    for entry in entries:
+        pass
 
 
 if __name__ == "__main__":
