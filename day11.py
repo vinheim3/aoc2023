@@ -1,13 +1,14 @@
 from itertools import combinations
 
 from common import get_input
+from grid import Grid
 
 
 if __name__ == "__main__":
-    data = [[*row] for row in get_input(11)]
-    empty_rows = {i for (i, entry) in enumerate(data) if set(entry) == {'.'}}
-    empty_cols = set(i for i in range(len(data[0])) if set(row[i] for row in data) == {'.'})
-    galaxies = [(x, y) for y, row in enumerate(data) for x, col in enumerate(row) if col == '#']
+    grid = Grid(get_input(11))
+    empty_rows = {i for (i, entry) in enumerate(grid.get_rows()) if set(entry) == {'.'}}
+    empty_cols = set(i for i in range(grid.width) if set(row[i] for row in grid.get_rows()) == {'.'})
+    galaxies = [(x, y) for y, row in enumerate(grid.get_rows()) for x, col in enumerate(row) if col == '#']
     for expand in (2, 1_000_000):
         total = 0
         for pos1, pos2 in combinations(galaxies, 2):

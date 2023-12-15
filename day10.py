@@ -1,12 +1,13 @@
 from common import get_input
+from grid import Grid
 
 
-data = [[*row] for row in get_input(10)]
+grid = Grid(get_input(10))
 
 
 def get_next(prev, todo):
     x, y = todo
-    match data[y][x]:
+    match grid.cell(x, y):
         case '7':
             return (x - 1, y) if prev[0] == x else (x, y + 1)
         case 'F':
@@ -24,7 +25,7 @@ def get_next(prev, todo):
 if __name__ == "__main__":
     # Find initial position
     x, y = None, None
-    for y, line in enumerate(data):
+    for y, line in enumerate(grid.get_rows()):
         if 'S' in line:
             x = line.index('S')
             break
@@ -34,21 +35,21 @@ if __name__ == "__main__":
     prev1 = prev2 = (x, y)
     cells = []
     s_candidate = set("7FLJ-|")
-    if data[y][x - 1] in "FL-":
+    if grid.cell(x-1, y) in "FL-":
         cells.append((x - 1, y))
         s_candidate -= set("FL|")
-    if data[y][x + 1] in "7J-":
+    if grid.cell(x+1, y) in "7J-":
         cells.append((x + 1, y))
         s_candidate -= set("7J|")
-    if data[y - 1][x] in "F7|":
+    if grid.cell(x, y-1) in "F7|":
         cells.append((x, y - 1))
         s_candidate -= set("7F-")
-    if data[y + 1][x] in "LJ|":
+    if grid.cell(x, y+1) in "LJ|":
         cells.append((x, y + 1))
         s_candidate -= set("JL-")
     cell1, cell2 = filter(None, cells)
     found = {prev1, prev2, cell1, cell2}
-    data[y][x] = s_candidate.pop()
+    grid.grid[y][x] = s_candidate.pop()
 
     # Follow path, exiting once the loop is re-found
     cntr = 0
@@ -65,11 +66,11 @@ if __name__ == "__main__":
 
     # Re-gen grid, but only with the loop tiles in
     only_loop = []
-    width = len(data[0])
-    for _ in range(len(data)):
+    width = grid.width
+    for _ in range(grid.height):
         only_loop.append(['.'] * width)
     for x, y in found:
-        only_loop[y][x] = data[y][x]
+        only_loop[y][x] = grid.cell(x, y)
 
     # Expand horizontally
     new = []

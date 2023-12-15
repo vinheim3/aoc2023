@@ -1,4 +1,4 @@
-from typing import List, Callable
+from typing import List, Tuple
 
 
 class Grid:
@@ -9,6 +9,9 @@ class Grid:
         self.grid = [[*row] for row in data]
         self.width = len(data[0])
         self.height = len(data)
+
+    def cell(self, x, y):
+        return self.grid[y][x]
 
     def get_col(self, idx: int) -> List[str]:
         return [row[idx] for row in self.grid]
@@ -30,3 +33,19 @@ class Grid:
 
     def set_row(self, idx: int, row: List[str]):
         self.grid[idx] = row
+
+    def find_chs(self, ch) -> List[Tuple[int, int]]:
+        ret = []
+        for rowi, row in enumerate(self.get_rows()):
+            for coli, cell in enumerate(row):
+                if cell == ch:
+                    ret.append((coli, rowi))
+        return ret
+
+    def find_ch(self, ch) -> Tuple[int, int]:
+        ret = self.find_chs(ch)
+        assert len(ret) == 1
+        return ret[0]
+
+    def display(self):
+        print("\n".join("".join(row) for row in self.grid))

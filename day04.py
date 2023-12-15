@@ -2,7 +2,6 @@ from common import get_input
 
 
 def lines_to_win(data):
-    data = get_input(4)
     ret = {}
     for i, line in enumerate(data):
         nums = line.split(": ")[1]

@@ -17,12 +17,14 @@ data = """
 
 def part1():
     entries = deepcopy(data)
+    # grid = Grid(entries)
     for entry in entries:
         pass
 
 
 def part2():
     entries = deepcopy(data)
+    # grid = Grid(entries)
     for entry in entries:
         pass
 
