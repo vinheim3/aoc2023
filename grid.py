@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List, Tuple
 
 
@@ -49,3 +50,73 @@ class Grid:
 
     def display(self):
         print("\n".join("".join(row) for row in self.grid))
+
+
+class Dirs(Enum):
+    N = 0
+    E = 1
+    S = 2
+    W = 3
+
+
+class GridEntity:
+    def __init__(self, x, y, dir: Dirs):
+        self.x = x
+        self.y = y
+        self.dir = dir
+        
+    def move(self, grid) -> bool:
+        """Returns if still inside the grid"""
+        match self.dir:
+            case Dirs.N:
+                self.y -= 1
+                if self.y < 0:
+                    return False
+            case Dirs.E:
+                self.x += 1
+                if self.x == grid.width:
+                    return False
+            case Dirs.S:
+                self.y += 1
+                if self.y == grid.height:
+                    return False
+            case Dirs.W:
+                self.x -= 1
+                if self.x < 0:
+                    return False
+
+        return True
+    
+    def reflect_fw_slash(self):
+        match self.dir:
+            case Dirs.N:
+                self.dir = Dirs.E
+            case Dirs.E:
+                self.dir = Dirs.N
+            case Dirs.S:
+                self.dir = Dirs.W
+            case Dirs.W:
+                self.dir = Dirs.S
+
+    def reflect_bw_slash(self):
+        match self.dir:
+            case Dirs.N:
+                self.dir = Dirs.W
+            case Dirs.E:
+                self.dir = Dirs.S
+            case Dirs.S:
+                self.dir = Dirs.E
+            case Dirs.W:
+                self.dir = Dirs.N
+                
+    def split_vert(self):
+        return [
+            GridEntity(self.x, self.y, Dirs.N),
+            GridEntity(self.x, self.y, Dirs.S),
+        ]
+
+    def split_horiz(self):
+        return [
+            GridEntity(self.x, self.y, Dirs.E),
+            GridEntity(self.x, self.y, Dirs.W),
+        ]
