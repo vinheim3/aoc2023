@@ -1,11 +1,13 @@
 from copy import deepcopy
 from collections import *
+from dataclasses import *
 from functools import *
 from itertools import *
 from math import *
+from typing import *
 
 from common import *
-from grid import Grid
+from grid import *
 
 level = 12
 

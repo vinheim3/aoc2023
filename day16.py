@@ -8,7 +8,7 @@ def move_beam(grid: Grid, beam: GridEntity, visited: List[List[List[bool]]]) -> 
     if not beam.move(grid):
         return []
 
-    dirv = beam.dir.value
+    dirv = beam.dir_.value
     if visited[beam.y][beam.x][dirv] is True:
         return []
     visited[beam.y][beam.x][dirv] = True
@@ -19,10 +19,10 @@ def move_beam(grid: Grid, beam: GridEntity, visited: List[List[List[bool]]]) -> 
         case "\\":
             beam.reflect_bw_slash()
         case "|":
-            if beam.dir in (Dirs.E, Dirs.W):
+            if beam.dir_ in (Dirs.E, Dirs.W):
                 return beam.split_vert()
         case "-":
-            if beam.dir in (Dirs.N, Dirs.S):
+            if beam.dir_ in (Dirs.N, Dirs.S):
                 return beam.split_horiz()
 
     return [beam]
