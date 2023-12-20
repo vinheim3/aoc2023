@@ -20,15 +20,19 @@ data = """
 def part1():
     entries = deepcopy(data)
     # grid = Grid(entries)
+    total = 0
     for entry in entries:
         pass
+    print("Part 1:", total)
 
 
 def part2():
     entries = deepcopy(data)
     # grid = Grid(entries)
+    total = 0
     for entry in entries:
         pass
+    print("Part 2:", total)
 
 
 if __name__ == "__main__":

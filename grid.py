@@ -57,6 +57,15 @@ class Grid:
             for i, row in enumerate(self.get_rows()):
                 print("".join(row) + " " + metadata.get(i, ""))
 
+    def to_immutable(self):
+        return tuple(tuple(row) for row in self.grid)
+
+    def flipx(self):
+        return Grid(make_md_array(self.width, self.height, lambda c, r: self.cell(self.width-c-1, r)))
+
+    def rotateCW(self):
+        return Grid(make_md_array(self.width, self.height, lambda c, r: self.cell(r, self.width-c-1)))
+
     def astar(self, x, y, tx, ty):
         _, grid_parents, _ = self.astar_expand(x, y, walls={'#'}, floors={'.'}, targets=set())
         return self.astar_move(x, y, tx, ty, grid_parents)

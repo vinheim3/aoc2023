@@ -31,3 +31,16 @@ def make_md_array(width, height, f: Callable[[int, int], T]) -> List[List[T]]:
             row.append(f(ci, ri))
         arr.append(row)
     return arr
+
+
+def group_by(arr, num):
+    groups = []
+    curr_group = []
+    for entry in arr:
+        curr_group.append(entry)
+        if len(curr_group) == num:
+            groups.append(curr_group)
+            curr_group = []
+    if len(curr_group) == num:
+        groups.append(curr_group)
+    return groups
