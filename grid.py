@@ -12,6 +12,7 @@ class Grid:
         self.grid = [[*row] for row in data]
         self.width = len(data[0])
         self.height = len(data)
+        self.follow_rules = {}
 
     def cell(self, x, y):
         return self.grid[y][x]
@@ -56,6 +57,20 @@ class Grid:
         else:
             for i, row in enumerate(self.get_rows()):
                 print("".join(row) + " " + metadata.get(i, ""))
+
+    def follow(self, x, y, dir_: "Dirs") -> Tuple[int, int, "Dirs"]:
+        match dir_:
+            case Dirs.N:
+                y -= 1
+            case Dirs.E:
+                x += 1
+            case Dirs.S:
+                y += 1
+            case Dirs.W:
+                x -= 1
+        cell = self.cell(x, y)
+        rules = self.follow_rules.get(dir_, {})
+        return x, y, rules.get(cell, dir_)
 
     def to_immutable(self):
         return tuple(tuple(row) for row in self.grid)

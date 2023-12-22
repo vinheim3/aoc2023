@@ -5,19 +5,17 @@ from grid import Grid, get_surrounding
 def fill_grid(center, grid, rounds):
     q = {(center, center)}
     for i in range(rounds):
-        new_q = set()
-        for x, y in q:
-            for nx, ny in get_surrounding(x, y):
-                if 0 <= nx < grid.width and 0 <= ny < grid.height and grid.cell(nx, ny) == '.':
-                    new_q.add((nx, ny))
-        q = new_q
+        q = {
+            (nx, ny) for x, y in q for nx, ny in get_surrounding(x, y)
+            if 0 <= nx < grid.width and 0 <= ny < grid.height and grid.cell(nx, ny) == '.'
+        }
     return q
 
 
 def part1():
     grid = Grid(get_input(21))
     x, y = grid.find_ch('S')
-    assert x == y
+    assert x == y and x == grid.width // 2  # S in the center is importannt for p2
     print("Part 1:", len(fill_grid(x, grid, 64)) + 1)  # include center due to even steps
 
 
