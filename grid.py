@@ -145,6 +145,10 @@ def get_surrounding_with_dirs(x, y):
     return [(x - 1, y, Dirs.W), (x + 1, y, Dirs.E), (x, y - 1, Dirs.N), (x, y + 1, Dirs.S)]
 
 
+def get_offs():
+    return [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+
 def get_offs_with_dirs(x, y):
     return [(-1, 0, Dirs.W), (1, 0, Dirs.E), (0, -1, Dirs.N), (0, 1, Dirs.S)]
 

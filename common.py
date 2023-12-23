@@ -44,3 +44,20 @@ def group_by(arr, num):
     if len(curr_group) == num:
         groups.append(curr_group)
     return groups
+
+
+def nums(string) -> List[int]:
+    return list(map(int, string.split()))
+
+
+class LLNode:
+    def __init__(self, val):
+        self.val = val
+        self.prev = None
+        self.next = None
+
+    def forward(self, num):
+        curr = self
+        for _ in range(num):
+            curr = curr.next
+        return curr
