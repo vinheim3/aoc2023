@@ -1,3 +1,4 @@
+from collections import defaultdict
 import sys
 
 import graphviz
@@ -6,40 +7,17 @@ from svgelements import Group, SVG
 from common import get_input
 
 
-class Comp:
-    def __init__(self, lbl):
-        self.lbl = lbl
-        self.conn = set()
-
-    def get_connected(self):
-        to_expand = list(self.conn)
-        conned = set()
-        while to_expand:
-            comp = to_expand.pop(0)
-            if comp not in conned:
-                conned.add(comp)
-                for node in comp.conn:
-                    if node not in conned:
-                        to_expand.append(node)
-        return conned
-
-
-comps = {}
+comps = defaultdict(set)
 connections = set()
 for entry in get_input(25):
     l, r = entry.split(": ")
-    r = r.split()
-    for comp in (l, *r):
-        if comp not in comps:
-            comps[comp] = Comp(comp)
-
     lcomp = comps[l]
-    for comp in r:
-        rcomp = comps[comp]
-        if lcomp not in rcomp.conn or rcomp not in lcomp.conn:
-            connections.add((l, comp))
-            rcomp.conn.add(lcomp)
-            lcomp.conn.add(rcomp)
+    for r in r.split():
+        rcomp = comps[r]
+        if lcomp not in rcomp or rcomp not in lcomp:
+            connections.add((l, r))
+            rcomp.add(l)
+            lcomp.add(r)
 
 
 def part1():
@@ -64,12 +42,21 @@ def part2(l='dvp', r='ngs'):
     assert len(to_remove) == 3
 
     for l, r in to_remove:
-        lc, rc = comps[l], comps[r]
-        lc.conn.remove(rc)
-        rc.conn.remove(lc)
+        comps[l].remove(r)
+        comps[r].remove(l)
 
-    nodes = list(comps.values())
-    connected1 = len(nodes[0].get_connected())
+    nodes = list(comps.keys())
+    to_expand = list(comps[nodes[0]])
+    conned = set()
+    while to_expand:
+        comp = to_expand.pop(0)
+        if comp not in conned:
+            conned.add(comp)
+            for node in comps[comp]:
+                if node not in conned:
+                    to_expand.append(node)
+
+    connected1 = len(conned)
     print("Answer:", connected1 * (len(nodes) - connected1))
 
 
